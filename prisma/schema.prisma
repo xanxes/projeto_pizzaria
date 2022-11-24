@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model tbl_bebida {
+  id                Int                 @id @unique(map: "id") @default(autoincrement())
+  nome              String              @db.VarChar(45)
+  preco             String              @db.VarChar(20)
+  descricao         String?             @db.Text
+  imagem            String?             @db.VarChar(256)
+  id_fabricante     Int
+  tbl_fabricante    tbl_fabricante      @relation(fields: [id_fabricante], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_fabricante_bebida")
+  tbl_bebida_oferta tbl_bebida_oferta[]
+  tbl_bebida_tipo   tbl_bebida_tipo[]
+  tbl_categoria     tbl_categoria[]
+
+  @@index([id_fabricante], map: "FK_fabricante_bebida")
+}
+
+model tbl_bebida_oferta {
+  id                      Int                       @id @unique(map: "id") @default(autoincrement())
+  id_bebida               Int
+  tbl_bebida              tbl_bebida                @relation(fields: [id_bebida], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_bebida_bebida_oferta")
+  tbl_oferta_pizza_bebida tbl_oferta_pizza_bebida[]
+
+  @@index([id_bebida], map: "FK_bebida_bebida_oferta")
+}
+
+model tbl_bebida_tipo {
+  id              Int             @id @unique(map: "id") @default(autoincrement())
+  id_tipo_bebida  Int
+  id_bebida       Int
+  tbl_bebida      tbl_bebida      @relation(fields: [id_bebida], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_bebida_bebida_tipo")
+  tbl_tipo_bebida tbl_tipo_bebida @relation(fields: [id_tipo_bebida], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_tipo_bebida_bebida_tipo")
+
+  @@index([id_bebida], map: "FK_bebida_bebida_tipo")
+  @@index([id_tipo_bebida], map: "FK_tipo_bebida_bebida_tipo")
+}
+
+model tbl_categoria {
+  id           Int            @id @unique(map: "id") @default(autoincrement())
+  categoria    String         @db.VarChar(45)
+  id_bebida    Int
+  id_pizza     Int
+  tbl_bebida   tbl_bebida     @relation(fields: [id_bebida], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_bebida_categoria")
+  tbl_pizza    tbl_pizza      @relation(fields: [id_pizza], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_pizza_categoria")
+  tbl_pizzaria tbl_pizzaria[]
+
+  @@index([id_bebida], map: "FK_bebida_categoria")
+  @@index([id_pizza], map: "FK_pizza_categoria")
+}
+
+model tbl_cidade {
+  id           Int            @id @unique(map: "id") @default(autoincrement())
+  nome         String         @db.VarChar(45)
+  id_estado    Int
+  tbl_estado   tbl_estado     @relation(fields: [id_estado], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_estado_cidade")
+  tbl_endereco tbl_endereco[]
+
+  @@index([id_estado], map: "FK_estado_cidade")
+}
+
+model tbl_cliente_contato {
+  id           Int          @id @unique(map: "id") @default(autoincrement())
+  nome         String       @db.VarChar(100)
+  email        String       @db.VarChar(256)
+  mensagem     String       @db.Text
+  tipo         Boolean?
+  telefone     String?      @db.VarChar(25)
+  celular      String       @db.VarChar(25)
+  id_pizzaria  Int
+  tbl_pizzaria tbl_pizzaria @relation(fields: [id_pizzaria], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_cliente_contato_pizzaria")
+
+  @@index([id_pizzaria], map: "FK_cliente_contato_pizzaria")
+}
+
+model tbl_endereco {
+  id           Int            @id @unique(map: "id") @default(autoincrement())
+  logradouro   String?        @db.VarChar(45)
+  bairro       String         @db.VarChar(100)
+  cep          String         @db.VarChar(45)
+  numero       Int
+  id_cidade    Int
+  tbl_cidade   tbl_cidade     @relation(fields: [id_cidade], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_endereco_cidade")
+  tbl_pizzaria tbl_pizzaria[]
+
+  @@index([id_cidade], map: "FK_endereco_cidade")
+}
+
+model tbl_estado {
+  id         Int          @id @unique(map: "id") @default(autoincrement())
+  nome       String       @db.VarChar(45)
+  sigla      String       @db.VarChar(5)
+  tbl_cidade tbl_cidade[]
+}
+
+model tbl_fabricante {
+  id         Int          @id @unique(map: "id") @default(autoincrement())
+  nome       String       @db.VarChar(20)
+  telefone   String?      @db.VarChar(20)
+  email      String?      @db.VarChar(256)
+  tbl_bebida tbl_bebida[]
+}
+
+model tbl_funcionario {
+  id           Int          @id @unique(map: "id") @default(autoincrement())
+  nome         String?      @db.VarChar(250)
+  email        String       @db.VarChar(256)
+  senha        String       @db.VarChar(45)
+  id_pizzaria  Int
+  tbl_pizzaria tbl_pizzaria @relation(fields: [id_pizzaria], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_funcionario_pizzaria")
+
+  @@index([id_pizzaria], map: "FK_funcionario_pizzaria")
+}
+
+model tbl_oferta_pizza_bebida {
+  id                Int               @id @unique(map: "id") @default(autoincrement())
+  promocao          Decimal?          @db.Decimal(10, 0)
+  id_pizza_oferta   Int
+  id_bebida_oferta  Int
+  tbl_bebida_oferta tbl_bebida_oferta @relation(fields: [id_bebida_oferta], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_bebida_oferta_oferta_pizza_bebida")
+  tbl_pizza_oferta  tbl_pizza_oferta  @relation(fields: [id_pizza_oferta], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_pizza_oferta_oferta_pizza_bebida")
+
+  @@index([id_bebida_oferta], map: "FK_bebida_oferta_oferta_pizza_bebida")
+  @@index([id_pizza_oferta], map: "FK_pizza_oferta_oferta_pizza_bebida")
+}
+
+model tbl_pizza {
+  id               Int                @id @unique(map: "id") @default(autoincrement())
+  nome             String             @db.VarChar(45)
+  preco            String             @db.VarChar(20)
+  imagem           String             @db.VarChar(256)
+  likes            Int
+  descricao        String?            @db.Text
+  id_tipo_pizza    Int
+  tbl_tipo_pizza   tbl_tipo_pizza     @relation(fields: [id_tipo_pizza], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_tipo_pizza_pizza")
+  tbl_categoria    tbl_categoria[]
+  tbl_pizza_oferta tbl_pizza_oferta[]
+
+  @@index([id_tipo_pizza], map: "FK_tipo_pizza_pizza")
+}
+
+model tbl_pizza_oferta {
+  id                      Int                       @id @unique(map: "id") @default(autoincrement())
+  id_pizza                Int
+  tbl_pizza               tbl_pizza                 @relation(fields: [id_pizza], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_pizza_pizza_oferta")
+  tbl_oferta_pizza_bebida tbl_oferta_pizza_bebida[]
+
+  @@index([id_pizza], map: "FK_pizza_pizza_oferta")
+}
+
+model tbl_pizzaria {
+  id                  Int                   @id @unique(map: "id") @default(autoincrement())
+  nome                String?               @db.VarChar(45)
+  telefone            String                @db.VarChar(25)
+  id_endereco         Int
+  id_categoria        Int
+  tbl_categoria       tbl_categoria         @relation(fields: [id_categoria], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_pizzaria_categoria")
+  tbl_endereco        tbl_endereco          @relation(fields: [id_endereco], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_pizzaria_endereco")
+  tbl_cliente_contato tbl_cliente_contato[]
+  tbl_funcionario     tbl_funcionario[]
+
+  @@index([id_categoria], map: "FK_pizzaria_categoria")
+  @@index([id_endereco], map: "FK_pizzaria_endereco")
+}
+
+model tbl_tipo_bebida {
+  id              Int               @id @unique(map: "id") @default(autoincrement())
+  tipo            String            @db.VarChar(45)
+  tbl_bebida_tipo tbl_bebida_tipo[]
+}
+
+model tbl_tipo_pizza {
+  id        Int         @id @unique(map: "id") @default(autoincrement())
+  tipo      String      @db.VarChar(20)
+  tbl_pizza tbl_pizza[]
+}
