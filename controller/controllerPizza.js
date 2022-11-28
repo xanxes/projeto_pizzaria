@@ -28,7 +28,7 @@ const novaPizza = async function (pizza){
                 else
                     return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB}
         }
-    }
+}
 
 //Funcao para listar todos os registros da tabela
 const listarPizzas = async function (){
@@ -81,30 +81,64 @@ const atualizaPizza = async function (pizza){
     
 }
 
-//Funcao para excluir um aluno
-const deletarPizza = async function (id){
-    if (id == '' || id == undefined)
-    return {status:400, message: MESSAGE_ERROR.REQUIRED_ID}
-else{
-    //Validacao para verificar se o id existe no BD
-    const buscar = await buscarPizza(id)
-    if (buscar){
-    const excluirCurso = require('../model/DAO/curso.js')
-    const result = await excluirCurso.deleteCurso(id)
-    
 
-    if(result)
-        return {status: 200, message: MESSAGE_SUCCESS.DELETE_ITEM}
-    else
-        return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB}
+//Funcao para excluir um registro
+const excluirPizza = async function (id) {
+    //Validaçao para o ID como campo obrigatório
+    if (id == ''|| id == undefined)
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
+    else{
+        //Validaçao para verificar se ID existe no BD
+        const pizza = await buscarPizza(id);
+
+        //Valida se foi encontrado um registro valido
+        if (pizza)
+        {
+            //import da model de curso
+            const excluirPizza = require('../model/DAO/pizza.js');
+
+            //chama a funcao para excluir um curso
+            const result = await excluirPizza.deletePizza(id);
+            
+            if (result)
+                return {status: 200, message: MESSAGE_SUCCESS.DELETE_ITEM};
+            else
+                return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
         }else{
-            return {status: 404, message: MESSAGE_ERROR.NOT_FOUND_DB}
-        } 
+            return {status: 404, message: MESSAGE_ERROR.NOT_FOUND_DB};
+        }
     }
 }
+
+//Funcao para retornar um registro baseado no ID
+const buscarPizza = async function (id) {
+    let dadosCursosJSON = {};
+
+    //Validaçao para o ID como campo obrigatório
+    if (id == ''|| id == undefined)
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
+    else{
+
+        const { selectByIdPizza } = require ('../model/DAO/pizza.js');
+
+        const dadosPizza = await selectByIdPizza(id);
+
+        if (dadosPizza)
+        {
+            //Criamos uma chave cursos no JSON para retornar o array de curso
+            dadosPizzasJSON.pizza = dadosPizza;
+
+            return dadosPizzasJSON;
+        }
+        else
+            return false;
+    }
+}
+
 
 module.exports = {
     novaPizza,
     listarPizzas,
-    atualizaPizza
+    atualizaPizza,
+    excluirPizza
 }

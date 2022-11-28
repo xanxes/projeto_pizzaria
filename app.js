@@ -139,6 +139,42 @@ app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
 
 })
 
+
+//EndPoint para excluir uma pizza
+app.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
+    let statusCode;
+    let message;
+    let id = request.params.id;
+    
+    //Validação do ID na requisição
+    if (id !== '' && id !== undefined){
+        //import do arquivo da controller de aluno
+        const controllerPizza= require('./controller/controllerPizza.js');
+        
+        //Chama a funcao para excluir um item 
+        const pizza = await controllerPizza.excluirPizza(id);
+
+        statusCode = pizza.status;
+        message = pizza.message;
+
+    }else{
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+/**************************************************************
+    Rotas para CRUD (Create, Read, Update e Delete) de bebidas
+    Data: 28/11/2022
+***************************************************************/
+
+
+
+
 //Ativa o servidor para receber requisicoes http
 app.listen(8080, function(){
     console.log('Servidor aguardando requisicoes...')

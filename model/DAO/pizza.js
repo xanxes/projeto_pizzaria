@@ -109,53 +109,41 @@ const deletePizza = async function (id){
    
 }
 
-// Funcao para retornar um registro baseado no id
-const buscarPizza = async function (id){
-    
+//Funcao para retornar apenas o registro baseado no ID
+const selectByIdPizza = async function (id) {
 
-    if (id == '' || id == undefined)
-    {
-        return {status:400, message: MESSAGE_ERROR.REQUIRED_ID}
-    }
-    
-    else{
+    //Import da classe prismaClient, que é responsável pelas interacoes com o BD
+    const { PrismaClient } = require('@prisma/client');
 
-    let dadosPizzaJSON = {};
-    
-    //Import das models aluno e aluno_curso
-    const {selectByIdAluno} = require('../model/DAO/aluno.js')
-    const {selectAlunoCurso} = require('../model/DAO/aluno_curso.js')
-    
-    const dadosAluno = await selectByIdAluno(id)
-    
-    if(dadosAluno)
-    {
-        const dadosAlunoCurso = await selectAlunoCurso(id)
+    //Instancia da classe PrismaClient
+    const prisma = new PrismaClient();
 
-        if(dadosAlunoCurso){
+    //Criamos um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    //através do script SQL (select)
 
-        dadosAluno[0].curso = dadosAlunoCurso
-        dadosAlunoJSON.aluno = dadosAluno
+    let sql = `select cast(id as float) as id,
+                    id,
+                    nome, 
+                    preco,
+                    imagem, 
+                    descricao, 
+                    id_tipo_pizza
+                from tbl_pizza 
+                where id = ${id}`
 
-        return dadosAlunoJSON;
-        }else
-        dadosAlunoJSON.aluno = dadosAluno
+    const rsPizza = await prisma.$queryRawUnsafe(sql) ;
 
-        return dadosAlunoJSON;
-    }   
-    else{
-        return false
-    }
-        
-                    
-        }
+    if (rsPizza.length > 0)
+        return rsPizza;
+    else
+        return false;
+
 }
-    
-
 
 module.exports = {
     insertPizza,
     selectAllPizzas,
     updatePizza,
-    deletePizza
+    deletePizza,
+    selectByIdPizza
 }
