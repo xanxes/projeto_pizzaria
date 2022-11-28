@@ -81,6 +81,28 @@ const atualizaPizza = async function (pizza){
     
 }
 
+//Funcao para excluir um aluno
+const deletarPizza = async function (id){
+    if (id == '' || id == undefined)
+    return {status:400, message: MESSAGE_ERROR.REQUIRED_ID}
+else{
+    //Validacao para verificar se o id existe no BD
+    const buscar = await buscarPizza(id)
+    if (buscar){
+    const excluirCurso = require('../model/DAO/curso.js')
+    const result = await excluirCurso.deleteCurso(id)
+    
+
+    if(result)
+        return {status: 200, message: MESSAGE_SUCCESS.DELETE_ITEM}
+    else
+        return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB}
+        }else{
+            return {status: 404, message: MESSAGE_ERROR.NOT_FOUND_DB}
+        } 
+    }
+}
+
 module.exports = {
     novaPizza,
     listarPizzas,

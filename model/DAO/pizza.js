@@ -81,9 +81,81 @@ const updatePizza = async function (pizza){
    
 }
 
+//Funcao para deletar um registro no BD
+const deletePizza = async function (id){
+    try {
+        //Import da classe prismaClient que é responsavel pelas interacoes com os BD 
+        const {PrismaClient} = require('@prisma/client')
+   
+        //Instancia da classe PrismaClient
+        const prisma = new PrismaClient();
+   
+        let sql = `delete from tbl_pizza where id = '${id}'`
+   
+        //console.log(sql)
+        //executa o script sql no BD
+        //Estecomando permite encaminhar uma variavel contendo o script
+        const result = await prisma.$executeRawUnsafe(sql);
+   
+        //Verifica se o script foi executado com sucesso no BD
+        if(result)
+            return true
+        else 
+           return false
+   
+       } catch (error) {
+           return false
+       }
+   
+}
+
+// Funcao para retornar um registro baseado no id
+const buscarPizza = async function (id){
+    
+
+    if (id == '' || id == undefined)
+    {
+        return {status:400, message: MESSAGE_ERROR.REQUIRED_ID}
+    }
+    
+    else{
+
+    let dadosPizzaJSON = {};
+    
+    //Import das models aluno e aluno_curso
+    const {selectByIdAluno} = require('../model/DAO/aluno.js')
+    const {selectAlunoCurso} = require('../model/DAO/aluno_curso.js')
+    
+    const dadosAluno = await selectByIdAluno(id)
+    
+    if(dadosAluno)
+    {
+        const dadosAlunoCurso = await selectAlunoCurso(id)
+
+        if(dadosAlunoCurso){
+
+        dadosAluno[0].curso = dadosAlunoCurso
+        dadosAlunoJSON.aluno = dadosAluno
+
+        return dadosAlunoJSON;
+        }else
+        dadosAlunoJSON.aluno = dadosAluno
+
+        return dadosAlunoJSON;
+    }   
+    else{
+        return false
+    }
+        
+                    
+        }
+}
+    
+
 
 module.exports = {
     insertPizza,
     selectAllPizzas,
     updatePizza,
+    deletePizza
 }
