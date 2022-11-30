@@ -111,6 +111,7 @@ const deletePizza = async function (id){
 
 //Funcao para retornar apenas o registro baseado no ID
 const selectByIdPizza = async function (id) {
+<<<<<<< HEAD
 
     //Import da classe prismaClient, que é responsável pelas interacoes com o BD
     const { PrismaClient } = require('@prisma/client');
@@ -140,7 +141,36 @@ const selectByIdPizza = async function (id) {
 
 }
 
+=======
 
+    //Import da classe prismaClient, que é responsável pelas interacoes com o BD
+    const { PrismaClient } = require('@prisma/client');
+
+    //Instancia da classe PrismaClient
+    const prisma = new PrismaClient();
+
+    //Criamos um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    //através do script SQL (select)
+>>>>>>> c679860af493b6d1ed91a7ca917e667b66828a90
+
+    let sql = `select cast(id as float) as id,
+                    id,
+                    nome, 
+                    preco,
+                    imagem, 
+                    descricao, 
+                    id_tipo_pizza
+                from tbl_pizza 
+                where id = ${id}`
+
+    const rsPizza = await prisma.$queryRawUnsafe(sql) ;
+
+    if (rsPizza.length > 0)
+        return rsPizza;
+    else
+        return false;
+
+}
 
 module.exports = {
     insertPizza,

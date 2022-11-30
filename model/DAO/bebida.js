@@ -14,14 +14,21 @@ const selectAllBebidas = async function (){
     //Instancia da classe PrismaClient
     const prisma = new PrismaClient();
 
+<<<<<<< HEAD
     //atraves do script SQL  (select)
     const rsBebida = await prisma.$queryRaw `select * from tbl_bebida order by id desc`;
+=======
+    //Criamos um objeto do tipo RecordSet (rsAluno) para receber os dados do BD
+    //atraves do script SQL  (select)
+    const rsBebida = await prisma.$queryRaw `select id, nome, preco, imagem, descricao, id_fabricante from tbl_bebida order by id desc`;
+>>>>>>> c679860af493b6d1ed91a7ca917e667b66828a90
 
     if (rsBebida.length > 0)
         return rsBebida;
     else
         return false;
 
+<<<<<<< HEAD
 }
 
 const insertBebida = async function (bebida){
@@ -84,4 +91,6 @@ module.exports = {
     updateBebida
 
 
+=======
+>>>>>>> c679860af493b6d1ed91a7ca917e667b66828a90
 }
