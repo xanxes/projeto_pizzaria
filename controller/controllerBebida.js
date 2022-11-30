@@ -1,47 +1,23 @@
 /**************************************************************************************************
- * Objetivo: Arquivo responsavel pela manipulacao de recebimento, tratamento e retorno de dados entre a API e a module
+ * Objetivo: Arquivo responsavel pela manipulacao de dados como BD (Insert, update, select, delete)
  * Autor: Marcelo Sanches
- * Data de criaçao: 23/11/2022
+ * Data de criaçao: 30/11/2022
  * Versão: 1.0
 ****************************************************************************************************/
 const { MESSAGE_ERROR, MESSAGE_SUCCESS } = require('../modulo/config.js')
 
-// Funcao para gerar uma nova pizza
-const novaPizza = async function (pizza){
-
-//Validacao de campos obrigatorios
-    if (pizza.nome == '' || pizza.nome ==  undefined || pizza.preco == '' || pizza.preco ==  undefined
-    || pizza.imagem == '' || pizza.imagem ==  undefined || pizza.descricao == '' || pizza.descricao ==  undefined || pizza.id_tipo_pizza == ''
-    || pizza.id_tipo_pizza == undefined)
-        return { status:400, message: MESSAGE_ERROR.REQUIRED_FIELDS} 
-        else
-        {
-            //import da model de pizzas
-            const novaPizza =  require('../model/DAO/pizza.js')
-
-            //chama a funcao para inserir uma nova pizza
-            const result = await novaPizza.insertPizza(pizza)
-    
-            
-                if(result)
-                    return {status: 201, message: MESSAGE_SUCCESS.INSERT_ITEM}
-                else
-                    return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB}
-        }
-}
-
 //Funcao para listar todos os registros da tabela
-const listarPizzas = async function (){
+const listarBebidas = async function (){
 
-    let dadosPizzasJSON = {};
+    let dadosBebidasJSON = {};
     
-    const {selectAllPizzas} = require('../model/DAO/pizza.js')
+    const {selectAllBebidas} = require('../model/DAO/bebida.js')
     
-    const dadosPizzas = await selectAllPizzas()
+    const dadosBebidas = await selectAllBebidas()
     
     
     
-    if(dadosPizzas)
+    if(dadosBebidas)
     {
         // dadosAlunos.forEach(element => {
         //     element.id = Number(element.id)
@@ -49,8 +25,8 @@ const listarPizzas = async function (){
     
         //dadosPizzas.reverse()
     
-        dadosPizzasJSON.pizzas = dadosPizzas;
-        return dadosPizzasJSON;
+        dadosBebidasJSON.bebidas = dadosBebidas;
+        return dadosBebidasJSON;
     }
     
     else
@@ -58,19 +34,43 @@ const listarPizzas = async function (){
     
 }
 
+// Funcao para gerar uma nova bebida
+const novaBebida = async function (bebida){
+
+    //Validacao de campos obrigatorios
+        if (bebida.nome == '' || bebida.nome ==  undefined || bebida.preco == '' || bebida.preco ==  undefined
+        || bebida.imagem == '' || bebida.imagem ==  undefined || bebida.descricao == '' || bebida.descricao ==  undefined || bebida.id_fabricante == ''
+        || bebida.id_fabricante == undefined)
+            return { status:400, message: MESSAGE_ERROR.REQUIRED_FIELDS} 
+            else
+            {
+                //import da model de pizzas
+                const novaBebida =  require('../model/DAO/bebida.js')
+    
+                //chama a funcao para inserir uma nova pizza
+                const result = await novaBebida.insertBebida(bebida)
+        
+                
+                    if(result)
+                        return {status: 201, message: MESSAGE_SUCCESS.INSERT_ITEM}
+                    else
+                        return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB}
+            }
+}
+
 // Funcao para ataualizar dados sobre um curso
-const atualizaPizza = async function (pizza){
-    if (pizza.id == ''|| pizza.id == undefined)
+const atualizaBebida = async function (bebida){
+    if (bebida.id == ''|| bebida.id == undefined)
         return {status:400, message: MESSAGE_ERROR.REQUIRED_ID}
     //Validacao de campos obrigatorios
-    else if (pizza.nome == '' || pizza.nome ==  undefined || pizza.preco == '' || pizza.preco ==  undefined)
+    else if (bebida.nome == '' || bebida.nome ==  undefined || bebida.preco == '' || bebida.preco ==  undefined)
         return { status:400, message: MESSAGE_ERROR.REQUIRED_FIELDS}
 
     else
     {
     //import da model de cursos
-        const atualizarPizza = require('../model/DAO/pizza.js')
-        const result = await atualizarPizza.updatePizza(pizza)
+        const atualizarBebida = require('../model/DAO/bebida.js')
+        const result = await atualizarBebida.updateBebida(bebida)
     
     //chama a funcao para inserir um novo aluno
         if(result)
@@ -82,7 +82,7 @@ const atualizaPizza = async function (pizza){
 }
 
 //Funcao para excluir um registro
-const excluirPizza = async function (id) {
+const excluirBebida = async function (id) {
     //Validaçao para o ID como campo obrigatório
     if (id == ''|| id == undefined)
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
@@ -94,7 +94,7 @@ const excluirPizza = async function (id) {
         if (pizza)
         {
             //import da model de curso
-            const excluirPizza = require('../model/DAO/pizza.js');
+            const excluirBebida = require('../model/DAO/pizza.js');
 
             //chama a funcao para excluir um curso
             const result = await excluirPizza.deletePizza(id);
@@ -135,9 +135,7 @@ const buscarPizza = async function (id) {
 }
 
 module.exports = {
-    novaPizza,
-    listarPizzas,
-    atualizaPizza,
-    excluirPizza,
-    buscarPizza
+    listarBebidas,
+    novaBebida,
+    atualizaBebida
 }

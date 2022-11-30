@@ -139,6 +139,155 @@ app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
 
 })
 
+//EndPoint para excluir uma pizza
+app.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
+    let statusCode;
+    let message;
+    let id = request.params.id;
+    
+    //Validação do ID na requisição
+    if (id !== '' && id !== undefined){
+        //import do arquivo da controller de aluno
+        const controllerPizza= require('./controller/controllerPizza.js');
+        
+        //Chama a funcao para excluir um item 
+        const pizza = await controllerPizza.excluirPizza(id);
+
+        statusCode = pizza.status;
+        message = pizza.message;
+
+    }else{
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+/**************************************************************
+    Rotas para CRUD (Create, Read, Update e Delete) de bebidas
+    Data: 28/11/2022
+***************************************************************/
+
+//Listar todas as pizzas
+app.get('/v1/bebidas', cors(), async function (request, response){
+
+    let statusCode;
+    let message;
+
+    const controllerBebida = require('./controller/controllerBebida.js')
+    const dadosBebida = await controllerBebida.listarBebidas();
+
+    //Verifica se existe retorno de dados
+    if(dadosBebida){
+        statusCode = 200;
+        message = dadosBebida
+    }else{
+        statusCode = 404;
+        message = MESSAGE_ERROR.NOT_FOUND_DB
+    }
+
+    
+    response.status(statusCode);
+    response.json(message);
+
+}) 
+
+//Inserir uma bebida
+app.post('/v1/bebida', cors(), jsonParser, async function(request, response){
+
+    let statusCode;
+    let message;
+    let headerContentType;
+
+    //Recebe o tipo de content type que foi enviado no header da requisicao
+    headerContentType = request.headers['content-type']
+ 
+    if(headerContentType == 'application/json')
+    {
+        let dadosBody = request.body;
+        
+        //Realiza o processo de conversao de dados para conseguir comparar um json vazio
+        if (JSON.stringify(dadosBody) != '{}'){
+            //import do arquivo da controller da pizza
+            const controllerBebida = require('./controller/controllerBebida.js')
+            //Chama a funcao nova pizza da controller e encaminha os dados do body
+            const novoProduto = await controllerBebida.novaBebida(dadosBody)
+
+        statusCode = novoProduto.status
+        message = novoProduto.message
+
+        }else
+        {
+            statusCode =  400;
+            message = MESSAGE_ERROR.EMPTY_BODY
+        }
+        
+    }else{
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE
+    }
+
+    response.status(statusCode)
+    response.json(message)
+
+})
+
+//Atualizar bebida
+app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response){
+
+    let statusCode;
+    let message;
+    let headerContentType;
+
+    //Recebe o tipo de content type que foi enviado no header da requisicao
+    headerContentType = request.headers['content-type']
+ 
+    if(headerContentType == 'application/json')
+    {
+        let dadosBody = request.body;
+        
+        //Realiza o processo de conveersao de dados para conseguir comparar um json vazio
+        if (JSON.stringify(dadosBody) != '{}')
+        {
+            ///recebe o id enviado por parametro na requisicao
+            let id = request.params.id;
+            //validacao do id na requisicao
+            if(id != '' && id != undefined){
+            //adiciona o id no JSON que  hegou no corpo da requisicao
+            dadosBody.id = id;
+            //import do arquivo da controller da pizza
+            const controllerBebida = require('./controller/controllerBebida.js')
+            //Chama a funcao novo aluno da controller e encaminha os dados do body
+            const novaBebida = await controllerBebida.atualizaBebida(dadosBody)
+
+            statusCode = novaBebida.status
+            message = novaBebida.message
+        }else {
+            statusCode = 400
+            message = MESSAGE_ERROR.REQUIRED_ID
+        }
+
+        }else{
+            statusCode =  400;
+            message = MESSAGE_ERROR.EMPTY_BODY
+        }
+        
+    }else{
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE
+    }
+
+    response.status(statusCode)
+    response.json(message)
+
+})
+
+
+
+
 //Ativa o servidor para receber requisicoes http
 app.listen(8080, function(){
     console.log('Servidor aguardando requisicoes...')
