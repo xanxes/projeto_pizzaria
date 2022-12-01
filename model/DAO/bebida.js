@@ -14,21 +14,14 @@ const selectAllBebidas = async function (){
     //Instancia da classe PrismaClient
     const prisma = new PrismaClient();
 
-<<<<<<< HEAD
     //atraves do script SQL  (select)
     const rsBebida = await prisma.$queryRaw `select * from tbl_bebida order by id desc`;
-=======
-    //Criamos um objeto do tipo RecordSet (rsAluno) para receber os dados do BD
-    //atraves do script SQL  (select)
-    const rsBebida = await prisma.$queryRaw `select id, nome, preco, imagem, descricao, id_fabricante from tbl_bebida order by id desc`;
->>>>>>> c679860af493b6d1ed91a7ca917e667b66828a90
 
     if (rsBebida.length > 0)
         return rsBebida;
     else
         return false;
 
-<<<<<<< HEAD
 }
 
 const insertBebida = async function (bebida){
@@ -38,8 +31,8 @@ const insertBebida = async function (bebida){
      //Instancia da classe PrismaClient
      const prisma = new PrismaClient();
 
-     let sql = `insert into tbl_bebida (nome, preco, imagem, descricao, id_fabricante) values('${bebida.nome}', '${bebida.preco}', '${bebida.imagem}', '${bebida.descricao}',
-     '${bebida.id_fabricante}')`
+     let sql = `insert into tbl_bebida (nome, preco, imagem, descricao, desconto, id_fabricante) values('${bebida.nome}', '${bebida.preco}', '${bebida.imagem}', '${bebida.descricao}',
+     '${bebida.desconto}', '${bebida.id_fabricante}')`
 
      //executa o script sql no BD
      //Este comando permite encaminhar uma variavel contendo o script
@@ -66,7 +59,8 @@ const updateBebida = async function (bebida){
         //Instancia da classe PrismaClient
         const prisma = new PrismaClient();
    
-        let sql = `update tbl_bebida set nome = '${bebida.nome}', preco = '${bebida.preco}', imagem = '${bebida.imagem}', descricao = '${bebida.descricao}' where id = '${bebida.id}'`
+        let sql = `update tbl_bebida set nome = '${bebida.nome}', preco = '${bebida.preco}', imagem = '${bebida.imagem}',
+        descricao = '${bebida.descricao}', desconto = '${bebida.desconto}' where id = '${bebida.id}'`
    
         //console.log(sql)
         //executa o script sql no BD
@@ -85,12 +79,69 @@ const updateBebida = async function (bebida){
    
 }
 
+//Funcao para deletar um registro no BD
+const deleteBebida = async function (id){
+    try {
+        //Import da classe prismaClient que é responsavel pelas interacoes com os BD 
+        const {PrismaClient} = require('@prisma/client')
+   
+        //Instancia da classe PrismaClient
+        const prisma = new PrismaClient();
+   
+        let sql = `delete from tbl_bebida where id = '${id}'`
+   
+        //console.log(sql)
+        //executa o script sql no BD
+        //Estecomando permite encaminhar uma variavel contendo o script
+        const result = await prisma.$executeRawUnsafe(sql);
+   
+        //Verifica se o script foi executado com sucesso no BD
+        if(result)
+            return true
+        else 
+           return false
+   
+       } catch (error) {
+           return false
+       }
+   
+}
+
+const selectByIdBebida = async function (id) {
+
+    //Import da classe prismaClient, que é responsável pelas interacoes com o BD
+    const { PrismaClient } = require('@prisma/client');
+
+    //Instancia da classe PrismaClient
+    const prisma = new PrismaClient();
+
+    //Criamos um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    //através do script SQL (select)
+
+    let sql = `select cast(id as float) as id,
+                    id,
+                    nome, 
+                    preco,
+                    imagem, 
+                    descricao, 
+                    id_fabricante,
+                    desconto
+                from tbl_bebida 
+                where id = ${id}`
+
+    const rsBebida = await prisma.$queryRawUnsafe(sql) ;
+
+    if (rsBebida.length > 0)
+        return rsBebida;
+    else
+        return false;
+
+}
+
 module.exports = {
     selectAllBebidas,
     insertBebida,
-    updateBebida
-
-
-=======
->>>>>>> c679860af493b6d1ed91a7ca917e667b66828a90
+    updateBebida,
+    deleteBebida,
+    selectByIdBebida
 }

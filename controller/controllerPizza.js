@@ -11,8 +11,7 @@ const novaPizza = async function (pizza){
 
 //Validacao de campos obrigatorios
     if (pizza.nome == '' || pizza.nome ==  undefined || pizza.preco == '' || pizza.preco ==  undefined
-    || pizza.imagem == '' || pizza.imagem ==  undefined || pizza.descricao == '' || pizza.descricao ==  undefined || pizza.id_tipo_pizza == ''
-    || pizza.id_tipo_pizza == undefined)
+    || pizza.imagem == '' || pizza.imagem ==  undefined || pizza.descricao == '' || pizza.descricao ==  undefined)
         return { status:400, message: MESSAGE_ERROR.REQUIRED_FIELDS} 
         else
         {
@@ -81,7 +80,6 @@ const atualizaPizza = async function (pizza){
     
 }
 
-<<<<<<< HEAD
 //Funcao para excluir um registro
 const excluirPizza = async function (id) {
     //Validaçao para o ID como campo obrigatório
@@ -91,18 +89,6 @@ const excluirPizza = async function (id) {
         //Validaçao para verificar se ID existe no BD
         const pizza = await buscarPizza(id);
 
-=======
-
-//Funcao para excluir um registro
-const excluirPizza = async function (id) {
-    //Validaçao para o ID como campo obrigatório
-    if (id == ''|| id == undefined)
-        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
-    else{
-        //Validaçao para verificar se ID existe no BD
-        const pizza = await buscarPizza(id);
-
->>>>>>> c679860af493b6d1ed91a7ca917e667b66828a90
         //Valida se foi encontrado um registro valido
         if (pizza)
         {
@@ -119,40 +105,12 @@ const excluirPizza = async function (id) {
         }else{
             return {status: 404, message: MESSAGE_ERROR.NOT_FOUND_DB};
         }
-<<<<<<< HEAD
     }
 }
 
 //Funcao para retornar um registro baseado no ID
 const buscarPizza = async function (id) {
     let dadosPizzasJSON = {};
-
-    //Validaçao para o ID como campo obrigatório
-    if (id == ''|| id == undefined)
-        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
-    else{
-
-        const { selectByIdPizza } = require ('../model/DAO/pizza.js');
-
-        const dadosPizza = await selectByIdPizza(id);
-
-        if (dadosPizza)
-        {
-            //Criamos uma chave cursos no JSON para retornar o array de curso
-            dadosPizzasJSON.pizza = dadosPizza;
-
-            return dadosPizzasJSON;
-        }
-        else
-            return false;
-=======
->>>>>>> c679860af493b6d1ed91a7ca917e667b66828a90
-    }
-}
-
-//Funcao para retornar um registro baseado no ID
-const buscarPizza = async function (id) {
-    let dadosCursosJSON = {};
 
     //Validaçao para o ID como campo obrigatório
     if (id == ''|| id == undefined)
@@ -180,10 +138,6 @@ module.exports = {
     novaPizza,
     listarPizzas,
     atualizaPizza,
-<<<<<<< HEAD
     excluirPizza,
     buscarPizza
-=======
-    excluirPizza
->>>>>>> c679860af493b6d1ed91a7ca917e667b66828a90
 }

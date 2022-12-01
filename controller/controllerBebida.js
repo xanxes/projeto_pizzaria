@@ -88,16 +88,16 @@ const excluirBebida = async function (id) {
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
     else{
         //Validaçao para verificar se ID existe no BD
-        const pizza = await buscarPizza(id);
+        const bebida = await buscarBebida(id);
 
         //Valida se foi encontrado um registro valido
-        if (pizza)
+        if (bebida)
         {
             //import da model de curso
-            const excluirBebida = require('../model/DAO/pizza.js');
+            const excluirBebida = require('../model/DAO/bebida.js');
 
             //chama a funcao para excluir um curso
-            const result = await excluirPizza.deletePizza(id);
+            const result = await excluirBebida.deleteBebida(id);
             
             if (result)
                 return {status: 200, message: MESSAGE_SUCCESS.DELETE_ITEM};
@@ -110,24 +110,24 @@ const excluirBebida = async function (id) {
 }
 
 //Funcao para retornar um registro baseado no ID
-const buscarPizza = async function (id) {
-    let dadosPizzasJSON = {};
+const buscarBebida = async function (id) {
+    let dadosBebidasJSON = {};
 
     //Validaçao para o ID como campo obrigatório
     if (id == ''|| id == undefined)
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID}
     else{
 
-        const { selectByIdPizza } = require ('../model/DAO/pizza.js');
+        const { selectByIdBebida } = require ('../model/DAO/bebida.js');
 
-        const dadosPizza = await selectByIdPizza(id);
+        const dadosBebida = await selectByIdBebida(id);
 
-        if (dadosPizza)
+        if (dadosBebida)
         {
             //Criamos uma chave cursos no JSON para retornar o array de curso
-            dadosPizzasJSON.pizza = dadosPizza;
+            dadosBebidasJSON.bebida = dadosBebida;
 
-            return dadosPizzasJSON;
+            return dadosBebidasJSON;
         }
         else
             return false;
@@ -137,5 +137,8 @@ const buscarPizza = async function (id) {
 module.exports = {
     listarBebidas,
     novaBebida,
-    atualizaBebida
+    excluirBebida,
+    atualizaBebida,
+    excluirBebida,
+    buscarBebida
 }

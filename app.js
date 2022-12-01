@@ -171,7 +171,7 @@ app.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response
     Data: 28/11/2022
 ***************************************************************/
 
-//Listar todas as pizzas
+//Listar todas as bebidas
 app.get('/v1/bebidas', cors(), async function (request, response){
 
     let statusCode;
@@ -284,6 +284,180 @@ app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response){
     response.json(message)
 
 })
+
+//EndPoint para excluir uma bebida
+app.delete('/v1/bebida/:id', cors(), jsonParser, async function(request, response){
+    let statusCode;
+    let message;
+    let id = request.params.id;
+    
+    //Validação do ID na requisição
+    if (id !== '' && id !== undefined){
+        //import do arquivo da controller de aluno
+        const controllerBebida = require('./controller/controllerBebida.js');
+        
+        //Chama a funcao para excluir um item 
+        const bebida = await controllerBebida.excluirBebida(id);
+
+        statusCode = bebida.status;
+        message = bebida.message;
+
+    }else{
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+/**************************************************************
+    Rotas para CRUD (Create, Read, Update e Delete) de categoria
+    Data: 28/11/2022
+***************************************************************/
+
+
+//Listar todas as categorias
+app.get('/v1/categorias', cors(), async function (request, response){
+
+    let statusCode;
+    let message;
+
+    const controllerCategoria = require('./controller/controllerCategoria.js')
+    const dadosCategoria = await controllerCategoria.listarCategorias();
+
+    //Verifica se existe retorno de dados
+    if(dadosCategoria){
+        statusCode = 200;
+        message = dadosCategoria
+    }else{
+        statusCode = 404;
+        message = MESSAGE_ERROR.NOT_FOUND_DB
+    }
+
+    
+    response.status(statusCode);
+    response.json(message);
+
+}) 
+
+//Inserir uma categoria
+app.post('/v1/categoria', cors(), jsonParser, async function(request, response){
+
+    let statusCode;
+    let message;
+    let headerContentType;
+
+    //Recebe o tipo de content type que foi enviado no header da requisicao
+    headerContentType = request.headers['content-type']
+ 
+    if(headerContentType == 'application/json')
+    {
+        let dadosBody = request.body;
+        
+        //Realiza o processo de conversao de dados para conseguir comparar um json vazio
+        if (JSON.stringify(dadosBody) != '{}'){
+            //import do arquivo da controller da pizza
+            const controllerCategoria = require('./controller/controllerCategoria.js')
+            //Chama a funcao nova pizza da controller e encaminha os dados do body
+            const novoProduto = await controllerCategoria.novaCategoria(dadosBody)
+
+        statusCode = novoProduto.status
+        message = novoProduto.message
+
+        }else
+        {
+            statusCode =  400;
+            message = MESSAGE_ERROR.EMPTY_BODY
+        }
+        
+    }else{
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE
+    }
+
+    response.status(statusCode)
+    response.json(message)
+
+})
+
+//Atualizar categoria
+app.put('/v1/categoria/:id', cors(), jsonParser, async function(request, response){
+
+    let statusCode;
+    let message;
+    let headerContentType;
+
+    //Recebe o tipo de content type que foi enviado no header da requisicao
+    headerContentType = request.headers['content-type']
+ 
+    if(headerContentType == 'application/json')
+    {
+        let dadosBody = request.body;
+        
+        //Realiza o processo de conveersao de dados para conseguir comparar um json vazio
+        if (JSON.stringify(dadosBody) != '{}')
+        {
+            ///recebe o id enviado por parametro na requisicao
+            let id = request.params.id;
+            //validacao do id na requisicao
+            if(id != '' && id != undefined){
+            //adiciona o id no JSON que  chegou no corpo da requisicao
+            dadosBody.id = id;
+            //import do arquivo da controller da categoria
+            const controllerCategoria = require('./controller/controllerCategoria.js')
+            //Chama a funcao novo aluno da controller e encaminha os dados do body
+            const novaCategoria = await controllerCategoria.atualizaCategoria(dadosBody)
+
+            statusCode = novaCategoria.status
+            message = novaCategoria.message
+        }else {
+            statusCode = 400
+            message = MESSAGE_ERROR.REQUIRED_ID
+        }
+
+        }else{
+            statusCode =  400;
+            message = MESSAGE_ERROR.EMPTY_BODY
+        }
+        
+    }else{
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE
+    }
+
+    response.status(statusCode)
+    response.json(message)
+
+})
+
+//EndPoint para excluir uma categoria
+app.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, response){
+    let statusCode;
+    let message;
+    let id = request.params.id;
+    
+    //Validação do ID na requisição
+    if (id !== '' && id !== undefined){
+        //import do arquivo da controller de aluno
+        const controllerCategoria = require('./controller/controllerCategoria.js');
+        
+        //Chama a funcao para excluir um item 
+        const categoria = await controllerCategoria.excluirCategoria(id);
+
+        statusCode = categoria.status;
+        message = categoria.message;
+
+    }else{
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
 
 
 
