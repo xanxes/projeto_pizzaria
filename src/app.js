@@ -5,6 +5,7 @@
  * Versão: 1.0
 ****************************************************************************************************/
 
+const { Router } = require('express')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors');
@@ -12,10 +13,11 @@ const { request } = require('express');
 const { response } = require('express');
 const { header } = require('express/lib/request');
 const req = require('express/lib/request');
-const { MESSAGE_ERROR, MESSAGE_SUCCESS } = require('./modulo/config.js');
+const { MESSAGE_ERROR, MESSAGE_SUCCESS } = require('../modulo/config.js');
 const app = express();
+const routes = Router();
 
-app.use((request, response, next) => {
+routes.use((request, response, next) => {
     response.header(`Access-Control-Allow-Origin`, `*`);
     response.header(`Access-Control-Allow-Methods`, `GET, POST, PUT, DELETE, OPTIONS`);
     app.use(cors());
@@ -25,7 +27,7 @@ app.use((request, response, next) => {
 const jsonParser = bodyParser.json()
 
 //Inserir uma pizza
-app.post('/v1/pizza', cors(), jsonParser, async function(request, response){
+routes.post('/v1/pizza', cors(), jsonParser, async function(request, response){
 
     let statusCode;
     let message;
@@ -41,7 +43,7 @@ app.post('/v1/pizza', cors(), jsonParser, async function(request, response){
         //Realiza o processo de conversao de dados para conseguir comparar um json vazio
         if (JSON.stringify(dadosBody) != '{}'){
             //import do arquivo da controller da pizza
-            const controllerPizza = require('./controller/controllerPizza.js')
+            const controllerPizza = require('../controller/controllerPizza.js')
             //Chama a funcao nova pizza da controller e encaminha os dados do body
             const novoProduto = await controllerPizza.novaPizza(dadosBody)
 
@@ -65,13 +67,13 @@ app.post('/v1/pizza', cors(), jsonParser, async function(request, response){
 })
 
 //Listar todas as pizzas
-app.get('/v1/pizzas', cors(), async function (request, response){
+routes.get('/v1/pizzas', cors(), async function (request, response){
 
     let statusCode;
     let message;
 
     //Import do arquivo controllerAluno
-    const controllerPizza = require('./controller/controllerPizza.js')
+    const controllerPizza = require('../controller/controllerPizza.js')
     const dadosPizza = await controllerPizza.listarPizzas();
 
     //Verifica se existe retorno de dados
@@ -90,7 +92,7 @@ app.get('/v1/pizzas', cors(), async function (request, response){
 }) 
 
 //Atualizar pizza
-app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
+routes.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
 
     let statusCode;
     let message;
@@ -113,7 +115,7 @@ app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
             //adiciona o id no JSON que  hegou no corpo da requisicao
             dadosBody.id = id;
             //import do arquivo da controller da pizza
-            const controllerPizza = require('./controller/controllerPizza.js')
+            const controllerPizza = require('../controller/controllerPizza.js')
             //Chama a funcao novo aluno da controller e encaminha os dados do body
             const novaPizza = await controllerPizza.atualizaPizza(dadosBody)
 
@@ -140,7 +142,7 @@ app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
 })
 
 //EndPoint para excluir uma pizza
-app.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
+routes.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response){
     let statusCode;
     let message;
     let id = request.params.id;
@@ -148,7 +150,7 @@ app.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response
     //Validação do ID na requisição
     if (id !== '' && id !== undefined){
         //import do arquivo da controller de aluno
-        const controllerPizza= require('./controller/controllerPizza.js');
+        const controllerPizza= require('../controller/controllerPizza.js');
         
         //Chama a funcao para excluir um item 
         const pizza = await controllerPizza.excluirPizza(id);
@@ -172,12 +174,12 @@ app.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response
 ***************************************************************/
 
 //Listar todas as bebidas
-app.get('/v1/bebidas', cors(), async function (request, response){
+routes.get('/v1/bebidas', cors(), async function (request, response){
 
     let statusCode;
     let message;
 
-    const controllerBebida = require('./controller/controllerBebida.js')
+    const controllerBebida = require('../controller/controllerBebida.js')
     const dadosBebida = await controllerBebida.listarBebidas();
 
     //Verifica se existe retorno de dados
@@ -196,7 +198,7 @@ app.get('/v1/bebidas', cors(), async function (request, response){
 }) 
 
 //Inserir uma bebida
-app.post('/v1/bebida', cors(), jsonParser, async function(request, response){
+routes.post('/v1/bebida', cors(), jsonParser, async function(request, response){
 
     let statusCode;
     let message;
@@ -212,7 +214,7 @@ app.post('/v1/bebida', cors(), jsonParser, async function(request, response){
         //Realiza o processo de conversao de dados para conseguir comparar um json vazio
         if (JSON.stringify(dadosBody) != '{}'){
             //import do arquivo da controller da pizza
-            const controllerBebida = require('./controller/controllerBebida.js')
+            const controllerBebida = require('../controller/controllerBebida.js')
             //Chama a funcao nova pizza da controller e encaminha os dados do body
             const novoProduto = await controllerBebida.novaBebida(dadosBody)
 
@@ -236,7 +238,7 @@ app.post('/v1/bebida', cors(), jsonParser, async function(request, response){
 })
 
 //Atualizar bebida
-app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response){
+routes.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response){
 
     let statusCode;
     let message;
@@ -259,7 +261,7 @@ app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response){
             //adiciona o id no JSON que  hegou no corpo da requisicao
             dadosBody.id = id;
             //import do arquivo da controller da pizza
-            const controllerBebida = require('./controller/controllerBebida.js')
+            const controllerBebida = require('../controller/controllerBebida.js')
             //Chama a funcao novo aluno da controller e encaminha os dados do body
             const novaBebida = await controllerBebida.atualizaBebida(dadosBody)
 
@@ -286,7 +288,7 @@ app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response){
 })
 
 //EndPoint para excluir uma bebida
-app.delete('/v1/bebida/:id', cors(), jsonParser, async function(request, response){
+routes.delete('/v1/bebida/:id', cors(), jsonParser, async function(request, response){
     let statusCode;
     let message;
     let id = request.params.id;
@@ -294,7 +296,7 @@ app.delete('/v1/bebida/:id', cors(), jsonParser, async function(request, respons
     //Validação do ID na requisição
     if (id !== '' && id !== undefined){
         //import do arquivo da controller de aluno
-        const controllerBebida = require('./controller/controllerBebida.js');
+        const controllerBebida = require('../controller/controllerBebida.js');
         
         //Chama a funcao para excluir um item 
         const bebida = await controllerBebida.excluirBebida(id);
@@ -319,12 +321,12 @@ app.delete('/v1/bebida/:id', cors(), jsonParser, async function(request, respons
 
 
 //Listar todas as categorias
-app.get('/v1/categorias', cors(), async function (request, response){
+routes.get('/v1/categorias', cors(), async function (request, response){
 
     let statusCode;
     let message;
 
-    const controllerCategoria = require('./controller/controllerCategoria.js')
+    const controllerCategoria = require('../controller/controllerCategoria.js')
     const dadosCategoria = await controllerCategoria.listarCategorias();
 
     //Verifica se existe retorno de dados
@@ -343,7 +345,7 @@ app.get('/v1/categorias', cors(), async function (request, response){
 }) 
 
 //Inserir uma categoria
-app.post('/v1/categoria', cors(), jsonParser, async function(request, response){
+routes.post('/v1/categoria', cors(), jsonParser, async function(request, response){
 
     let statusCode;
     let message;
@@ -359,7 +361,7 @@ app.post('/v1/categoria', cors(), jsonParser, async function(request, response){
         //Realiza o processo de conversao de dados para conseguir comparar um json vazio
         if (JSON.stringify(dadosBody) != '{}'){
             //import do arquivo da controller da pizza
-            const controllerCategoria = require('./controller/controllerCategoria.js')
+            const controllerCategoria = require('../controller/controllerCategoria.js')
             //Chama a funcao nova pizza da controller e encaminha os dados do body
             const novoProduto = await controllerCategoria.novaCategoria(dadosBody)
 
@@ -383,7 +385,7 @@ app.post('/v1/categoria', cors(), jsonParser, async function(request, response){
 })
 
 //Atualizar categoria
-app.put('/v1/categoria/:id', cors(), jsonParser, async function(request, response){
+routes.put('/v1/categoria/:id', cors(), jsonParser, async function(request, response){
 
     let statusCode;
     let message;
@@ -406,7 +408,7 @@ app.put('/v1/categoria/:id', cors(), jsonParser, async function(request, respons
             //adiciona o id no JSON que  chegou no corpo da requisicao
             dadosBody.id = id;
             //import do arquivo da controller da categoria
-            const controllerCategoria = require('./controller/controllerCategoria.js')
+            const controllerCategoria = require('../controller/controllerCategoria.js')
             //Chama a funcao novo aluno da controller e encaminha os dados do body
             const novaCategoria = await controllerCategoria.atualizaCategoria(dadosBody)
 
@@ -433,7 +435,7 @@ app.put('/v1/categoria/:id', cors(), jsonParser, async function(request, respons
 })
 
 //EndPoint para excluir uma categoria
-app.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, response){
+routes.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, response){
     let statusCode;
     let message;
     let id = request.params.id;
@@ -441,7 +443,7 @@ app.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, resp
     //Validação do ID na requisição
     if (id !== '' && id !== undefined){
         //import do arquivo da controller de aluno
-        const controllerCategoria = require('./controller/controllerCategoria.js');
+        const controllerCategoria = require('../controller/controllerCategoria.js');
         
         //Chama a funcao para excluir um item 
         const categoria = await controllerCategoria.excluirCategoria(id);
@@ -460,9 +462,11 @@ app.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, resp
 });
 
 
+app.use('/.netlify/functions/api',routes);
 
+//Start da API
+// app.listen(8080, function(){
+//     console.log('Servidor aguardando requisicoes.');
+// })
 
-//Ativa o servidor para receber requisicoes http
-app.listen(8080, function(){
-    console.log('Servidor aguardando requisicoes...')
-})
+module.exports = app;
