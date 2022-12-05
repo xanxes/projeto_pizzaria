@@ -31,8 +31,8 @@ const insertBebida = async function (bebida){
      //Instancia da classe PrismaClient
      const prisma = new PrismaClient();
 
-     let sql = `insert into tbl_bebida (nome, preco, imagem, descricao, desconto, id_fabricante) values('${bebida.nome}', '${bebida.preco}', '${bebida.imagem}', '${bebida.descricao}',
-     '${bebida.desconto}', '${bebida.id_fabricante}')`
+     let sql = `insert into tbl_bebida (nome, preco, imagem, descricao, desconto) values('${bebida.nome}', '${bebida.preco}', '${bebida.imagem}', '${bebida.descricao}',
+     '${bebida.desconto}')`
 
      //executa o script sql no BD
      //Este comando permite encaminhar uma variavel contendo o script
@@ -115,7 +115,7 @@ const selectByIdBebida = async function (id) {
     //Instancia da classe PrismaClient
     const prisma = new PrismaClient();
 
-    //Criamos um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    //Criamos um objeto do tipo RecordSet (rsPizza) para receber os dados do BD
     //através do script SQL (select)
 
     let sql = `select cast(id as float) as id,
@@ -124,7 +124,6 @@ const selectByIdBebida = async function (id) {
                     preco,
                     imagem, 
                     descricao, 
-                    id_fabricante,
                     desconto
                 from tbl_bebida 
                 where id = ${id}`

@@ -1,0 +1,288 @@
+openapi: 3.0.3
+info:
+  title: Pizzaria API
+  description: |-
+   API destinada a controle de uma pizzaria
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: seunome@email.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: http://
+paths:
+  /v1/bebidas:
+    post:
+      tags:
+        - bebida
+      summary: Adiciona uma nova bebida
+      description: Insere uma nova bebida no banco de dados
+      requestBody:
+        description: JSON contendo os dados da bebida a ser inserido no sistema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bebida'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '405':
+          description: Invalid input
+    get:
+      tags:
+        - bebida
+      summary: Lista todas as bebidas
+      description: Listagem de todos as bebidas registrados no sistema
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bebida'          
+        '404':
+          description: Not Found
+  /v1/bebidas/{id}:
+    get:
+      tags:
+        - bebida
+      summary: Busca uma pizza pelo ID
+      description: Retorna uma pizza pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bebida'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+    put:
+      tags:
+        - bebida
+      summary: Atualiza uma já cadastrada
+      description: Atualiza uma bebida que já estava cadastrada no sistema
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update an existent pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bebida'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - bebida
+      summary: Delete bebida
+      description: Excluir uma bebida
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+          
+          paths:
+  /v1/pizza:
+    post:
+      tags:
+        - pizza
+      summary: Adiciona uma nova pizza
+      description: Insere uma nova pizza no banco de dados
+      requestBody:
+        description: JSON contendo os dados da pizza a ser inserido no sistema
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bebida'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '405':
+          description: Invalid input
+    get:
+      tags:
+        - pizza
+      summary: Lista todas as pizzas
+      description: Listagem de todos as pizzas registrados no sistema
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bebida'        
+           
+        '404':
+          description: Not Found
+          
+  /v1/pizzas/{id}:
+    get:
+      tags:
+        - pizza
+      summary: Busca uma bebida pelo ID
+      description: Retorna uma bebida pelo ID
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bebida'          
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+    put:
+      tags:
+        - pizza
+      summary: Atualiza uma pizza já cadastrada
+      description: Atualiza uma pizza que já estava cadastrada no sistema
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Update an existent pet in the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bebida'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - pizza
+      summary: Delete pizza
+      description: Excluir uma pizza
+      parameters:
+        - name: id
+          in: path
+          description: ID of pet to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Pet not found
+          
+          
+          
+components:
+  schemas:
+    Bebida:
+      required:
+        - nome
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        preco:
+          type: string
+        imagem:
+          type: string
+        descricao:
+          type: string
+        desconto:
+          type: number
+          
+    Pizza:
+      required:
+        - nome
+      type: object
+      properties:
+        id:
+          type: integer
+        nome:
+          type: string
+        preco:
+          type: string
+        imagem:
+          type: string
+        descricao:
+          type: string
+        desconto:
+          type: number
+
+    Categoria:
+      required:
+        - categoria
+      type: object
+      properties:
+        id:
+          type: integer
+        categoria:
+          type: string

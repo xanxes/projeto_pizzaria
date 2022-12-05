@@ -114,7 +114,7 @@ const selectByIdCategoria = async function (id) {
     //Instancia da classe PrismaClient
     const prisma = new PrismaClient();
 
-    //Criamos um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    //Criamos um objeto do tipo RecordSet (rsPizza) para receber os dados do BD
     //através do script SQL (select)
 
     let sql = `select cast(id as float) as id,
@@ -138,4 +138,4 @@ module.exports = {
     updateCategoria,
     deleteCategoria,
     selectByIdCategoria
-}
+} 

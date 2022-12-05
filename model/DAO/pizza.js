@@ -15,7 +15,7 @@ const selectAllPizzas = async function (){
     //Instancia da classe PrismaClient
     const prisma = new PrismaClient();
 
-    //Criamos um objeto do tipo RecordSet (rsAluno) para receber os dados do BD
+    //Criamos um objeto do tipo RecordSet (rsPizza) para receber os dados do BD
     //atraves do script SQL  (select)
     const rsPizza = await prisma.$queryRaw `select id, nome, preco, imagem, descricao, desconto from tbl_pizza order by id desc`;
 
@@ -119,7 +119,7 @@ const selectByIdPizza = async function (id) {
     //Instancia da classe PrismaClient
     const prisma = new PrismaClient();
 
-    //Criamos um objeto do tipo RecordSet (rsAlunos) para receber os dados do BD
+    //Criamos um objeto do tipo RecordSet (rsPizza) para receber os dados do BD
     //através do script SQL (select)
 
     let sql = `select cast(id as float) as id,

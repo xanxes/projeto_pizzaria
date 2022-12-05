@@ -39,8 +39,7 @@ const novaBebida = async function (bebida){
 
     //Validacao de campos obrigatorios
         if (bebida.nome == '' || bebida.nome ==  undefined || bebida.preco == '' || bebida.preco ==  undefined
-        || bebida.imagem == '' || bebida.imagem ==  undefined || bebida.descricao == '' || bebida.descricao ==  undefined || bebida.id_fabricante == ''
-        || bebida.id_fabricante == undefined)
+        || bebida.imagem == '' || bebida.imagem ==  undefined || bebida.descricao == '' || bebida.descricao ==  undefined)
             return { status:400, message: MESSAGE_ERROR.REQUIRED_FIELDS} 
             else
             {
