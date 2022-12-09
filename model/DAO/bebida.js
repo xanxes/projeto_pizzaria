@@ -38,7 +38,7 @@ const insertBebida = async function (bebida){
      '${bebida.descricao}',
      '${bebida.desconto}',
      ${bebida.id_tipo_bebida},
-     ${bebida.categoria})`
+     ${bebida.id_categoria})`
 
      //executa o script sql no BD
      //Este comando permite encaminhar uma variavel contendo o script
@@ -67,7 +67,7 @@ const updateBebida = async function (bebida){
    
         let sql = `update tbl_bebida set nome = '${bebida.nome}', preco = '${bebida.preco}', imagem = '${bebida.imagem}',
         descricao = '${bebida.descricao}', desconto = '${bebida.desconto}', id_tipo_bebida = ${bebida.id_tipo_bebida},
-        id_categoria = ${bebida.categoria}
+        id_categoria = ${bebida.id_categoria}
         where id = '${bebida.id}'`
    
         //console.log(sql)
