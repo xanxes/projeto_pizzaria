@@ -34,7 +34,12 @@ const insertPizza = async function (pizza){
      //Instancia da classe PrismaClient
      const prisma = new PrismaClient();
 
-     let sql = `insert into tbl_pizza (nome, preco, imagem, descricao, desconto) values('${pizza.nome}', '${pizza.preco}', '${pizza.imagem}', '${pizza.descricao}',
+     let sql = `insert into tbl_pizza (nome, preco, imagem, descricao, desconto, id_categoria, id_tipo_pizza) values('${pizza.nome}',
+     '${pizza.preco}',
+     '${pizza.imagem}',
+     '${pizza.descricao}',
+     '${pizza.id_categoria}',
+     '${pizza.id_tipo_pizza}',
      '${pizza.desconto}')`
 
      //executa o script sql no BD
@@ -63,7 +68,8 @@ const updatePizza = async function (pizza){
         const prisma = new PrismaClient();
    
         let sql = `update tbl_pizza set nome = '${pizza.nome}', preco = '${pizza.preco}', imagem = '${pizza.imagem}',
-        descricao = '${pizza.descricao}', desconto = '${pizza.desconto}' where id = '${pizza.id}'`
+        descricao = '${pizza.descricao}', desconto = '${pizza.desconto}', id_tipo_pizza =  '${pizza.id_tipo_pizza}', id_categoria = '${pizza.id_categoria}'
+        where id = '${pizza.id}'`
    
         console.log(sql)
         //executa o script sql no BD
@@ -128,7 +134,9 @@ const selectByIdPizza = async function (id) {
                     preco,
                     imagem, 
                     descricao, 
-                    desconto
+                    desconto,
+                    id_categoria
+                    id_tipo_pizza
                 from tbl_pizza 
                 where id = ${id}`
 

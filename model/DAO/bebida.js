@@ -31,7 +31,13 @@ const insertBebida = async function (bebida){
      //Instancia da classe PrismaClient
      const prisma = new PrismaClient();
 
-     let sql = `insert into tbl_bebida (nome, preco, imagem, descricao, desconto) values('${bebida.nome}', '${bebida.preco}', '${bebida.imagem}', '${bebida.descricao}',
+     let sql = `insert into tbl_bebida (nome, preco, imagem, descricao, desconto, id_tipo_bebida, id_categoria)
+     values('${bebida.nome}',
+     '${bebida.preco}',
+     '${bebida.imagem}',
+     '${bebida.descricao}',
+     '${bebida.id_tipo_bebida}',
+     '${bebida.categoria}',
      '${bebida.desconto}')`
 
      //executa o script sql no BD
@@ -60,7 +66,9 @@ const updateBebida = async function (bebida){
         const prisma = new PrismaClient();
    
         let sql = `update tbl_bebida set nome = '${bebida.nome}', preco = '${bebida.preco}', imagem = '${bebida.imagem}',
-        descricao = '${bebida.descricao}', desconto = '${bebida.desconto}' where id = '${bebida.id}'`
+        descricao = '${bebida.descricao}', desconto = '${bebida.desconto}', id_tipo_bebida = '${bebida.id_tipo_bebida}',
+        id_categoria = '${bebida.categoria}'
+        where id = '${bebida.id}'`
    
         //console.log(sql)
         //executa o script sql no BD
