@@ -39,8 +39,8 @@ const insertPizza = async function (pizza){
      '${pizza.imagem}',
      '${pizza.descricao}',
      '${pizza.desconto}',
-     '${pizza.id_categoria}',
-     '${pizza.id_tipo_pizza}')`
+     ${pizza.id_categoria},
+     ${pizza.id_tipo_pizza})`
 
      //executa o script sql no BD
      //Este comando permite encaminhar uma variavel contendo o script
@@ -68,7 +68,7 @@ const updatePizza = async function (pizza){
         const prisma = new PrismaClient();
    
         let sql = `update tbl_pizza set nome = '${pizza.nome}', preco = '${pizza.preco}', imagem = '${pizza.imagem}',
-        descricao = '${pizza.descricao}', desconto = '${pizza.desconto}', id_tipo_pizza =  '${pizza.id_tipo_pizza}', id_categoria = '${pizza.id_categoria}'
+        descricao = '${pizza.descricao}', desconto = '${pizza.desconto}', id_tipo_pizza =  ${pizza.id_tipo_pizza}, id_categoria = ${pizza.id_categoria}
         where id = '${pizza.id}'`
    
         console.log(sql)
