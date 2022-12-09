@@ -36,9 +36,9 @@ const insertBebida = async function (bebida){
      '${bebida.preco}',
      '${bebida.imagem}',
      '${bebida.descricao}',
+     '${bebida.desconto}',
      '${bebida.id_tipo_bebida}',
-     '${bebida.categoria}',
-     '${bebida.desconto}')`
+     '${bebida.categoria}')`
 
      //executa o script sql no BD
      //Este comando permite encaminhar uma variavel contendo o script
