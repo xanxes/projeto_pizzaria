@@ -79,7 +79,7 @@ const novaBebidaTipo = async (tipo) => {
   return false;
 };
 
-const listar ComTipo = async (id) => {
+const listarBebidasComTipo = async (id) => {
   const response = await prisma.$queryRaw`SELECT
     tbl_bebida.id as bebidaId,
     tbl_bebida.nome,
