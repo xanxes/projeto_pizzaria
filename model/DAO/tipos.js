@@ -79,7 +79,7 @@ const novaBebidaTipo = async (tipo) => {
   return false;
 };
 
-const listarBebidasComTipo = async (id) => {
+const listar ComTipo = async (id) => {
   const response = await prisma.$queryRaw`SELECT
     tbl_bebida.id as bebidaId,
     tbl_bebida.nome,
@@ -87,11 +87,9 @@ const listarBebidasComTipo = async (id) => {
     tbl_bebida.desconto,
     tbl_bebida.descricao,
     tbl_bebida.imagem,
-    tbl_fabricante.nome as nomeFabricante,
     tbl_categoria.categoria as nomeCategoria
 FROM tbl_tipo_bebida
     INNER JOIN tbl_bebida on tbl_bebida.id_tipo_bebida = tbl_tipo_bebida.id
-    INNER JOIN tbl_fabricante on tbl_fabricante.id = tbl_bebida.id_fabricante
     INNER JOIN tbl_categoria on tbl_categoria.id = tbl_bebida.id_categoria
 WHERE tbl_tipo_bebida.id = ${id};`;
 
