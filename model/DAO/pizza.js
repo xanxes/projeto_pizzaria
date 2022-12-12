@@ -17,7 +17,9 @@ const selectAllPizzas = async function (){
 
     //Criamos um objeto do tipo RecordSet (rsPizza) para receber os dados do BD
     //atraves do script SQL  (select)
-    const rsPizza = await prisma.$queryRaw `select id, nome, preco, imagem, descricao, desconto from tbl_pizza order by id desc`;
+    const rsPizza = await prisma.$queryRaw `SELECT id, nome, preco, imagem, descricao, desconto,
+ROUND((preco-(preco*desconto/100))) as final_price
+FROM tbl_pizza`;
 
     if (rsPizza.length > 0)
         return rsPizza;
@@ -128,17 +130,9 @@ const selectByIdPizza = async function (id) {
     //Criamos um objeto do tipo RecordSet (rsPizza) para receber os dados do BD
     //através do script SQL (select)
 
-    let sql = `select cast(id as float) as id,
-                    id,
-                    nome, 
-                    preco,
-                    imagem, 
-                    descricao, 
-                    desconto,
-                    id_categoria
-                    id_tipo_pizza
-                from tbl_pizza 
-                where id = ${id}`
+    let sql = `SELECT id, nome, preco, imagem, descricao, desconto,
+ROUND((preco-(preco*desconto/100))) as final_price
+FROM tbl_pizza where id = ${id}`
 
     const rsPizza = await prisma.$queryRawUnsafe(sql) ;
 
