@@ -18,8 +18,8 @@ const selectAllPizzas = async function (){
     //Criamos um objeto do tipo RecordSet (rsPizza) para receber os dados do BD
     //atraves do script SQL  (select)
     const rsPizza = await prisma.$queryRaw `SELECT id, nome, preco, imagem, descricao, desconto,
-ROUND((preco-(preco*desconto/100))) as final_price
-FROM tbl_pizza`;
+ROUND((preco-(preco*desconto/100))) as preco_final
+FROM tbl_pizza order by id desc`;
 
     if (rsPizza.length > 0)
         return rsPizza;
