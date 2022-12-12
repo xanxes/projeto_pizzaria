@@ -683,7 +683,7 @@ routes.post("/v1/mensagem/", cors(), jsonParser, async (req, res) => {
   res.json(mensagem.message);
 });
 
-routes.put("/v1/mensagem/:id", cors(), jsonParser, async (req, res) => {
+routes.put("/v1/mensagem/:id", cors(), jsonParser, checkLogin, async (req, res) => {
   const controllerMensagem = require("../controller/controllerMensagem");
 
   const data = {
