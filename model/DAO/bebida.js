@@ -15,7 +15,9 @@ const selectAllBebidas = async function (){
     const prisma = new PrismaClient();
 
     //atraves do script SQL  (select)
-    const rsBebida = await prisma.$queryRaw `select * from tbl_bebida order by id desc`;
+    const rsBebida = await prisma.$queryRaw `SELECT id, nome, preco, imagem, descricao, desconto,
+ROUND((preco-(preco*desconto/100))) as preco_final
+FROM tbl_bebida order by id desc`;
 
     if (rsBebida.length > 0)
         return rsBebida;
@@ -126,15 +128,9 @@ const selectByIdBebida = async function (id) {
     //Criamos um objeto do tipo RecordSet (rsPizza) para receber os dados do BD
     //através do script SQL (select)
 
-    let sql = `select cast(id as float) as id,
-                    id,
-                    nome, 
-                    preco,
-                    imagem, 
-                    descricao, 
-                    desconto
-                from tbl_bebida 
-                where id = ${id}`
+    let sql = `SELECT id, nome, preco, imagem, descricao, desconto,
+ROUND((preco-(preco*desconto/100))) as precp_final
+FROM tbl_bebida where id = ${id}`
 
     const rsBebida = await prisma.$queryRawUnsafe(sql) ;
 
