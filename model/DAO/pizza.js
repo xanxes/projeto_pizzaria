@@ -143,10 +143,33 @@ FROM tbl_pizza where id = ${id}`
 
 }
 
+const selectPromoPizzas = async function (){
+
+    //Import da classe prismaClient que é responsavel pelas interacoes com os BD 
+    const {PrismaClient} = require('@prisma/client')
+
+    //Instancia da classe PrismaClient
+    const prisma = new PrismaClient();
+
+    //Criamos um objeto do tipo RecordSet (rsPizza) para receber os dados do BD
+    //atraves do script SQL  (select)
+    const rsPizza = await prisma.$queryRaw `SELECT id, nome, preco, imagem, descricao, desconto,
+    ROUND((preco-(preco*desconto/100))) as preco_final
+    FROM tbl_pizza where desconto > 0 order by id desc`;
+
+    if (rsPizza.length > 0)
+        return rsPizza;
+    else
+        return false;
+
+}
+
+
 module.exports = {
     insertPizza,
     selectAllPizzas,
     updatePizza,
     deletePizza,
-    selectByIdPizza
+    selectByIdPizza,
+    selectPromoPizzas
 }

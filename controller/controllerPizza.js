@@ -134,10 +134,32 @@ const buscarPizza = async function (id) {
 }
 
 
+const listarPromoPizzas = async function (){
+
+    let dadosPizzasJSON = {};
+    
+    const {selectPromoPizzas} = require('../model/DAO/pizza.js')
+    
+    const dadosPizzas = await selectPromoPizzas()
+    
+    
+    if(dadosPizzas)
+    {
+        dadosPizzasJSON.pizzas = dadosPizzas;
+        return dadosPizzasJSON;
+    }
+    
+    else
+        return false
+    
+}
+
+
 module.exports = {
     novaPizza,
     listarPizzas,
     atualizaPizza,
     excluirPizza,
-    buscarPizza
+    buscarPizza,
+    listarPromoPizzas
 }
