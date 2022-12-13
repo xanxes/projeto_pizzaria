@@ -67,6 +67,28 @@ routes.post(
   }
 );
 
+//Listar as pizzas em promoção
+routes.get("/v1/promocao/pizzas", cors(), async function (request, response) {
+    let statusCode;
+    let message;
+  
+    //Import do arquivo controllerAluno
+    const controllerPizza = require("../controller/controllerPizza.js");
+    const dadosPizza = await controllerPizza.listarPromoPizzas();
+  
+    //Verifica se existe retorno de dados
+    if (dadosPizza) {
+      statusCode = 200;
+      message = dadosPizza;
+    } else {
+      statusCode = 404;
+      message = MESSAGE_ERROR.NOT_FOUND_DB;
+    }
+  
+    response.status(statusCode);
+    response.json(message);
+  });
+
 //Listar todas as pizzas
 routes.get("/v1/pizzas", cors(), async function (request, response) {
   let statusCode;
