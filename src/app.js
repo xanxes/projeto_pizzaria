@@ -20,10 +20,8 @@ const routes = Router();
 
 routes.use((request, response, next) => {
   response.header(`Access-Control-Allow-Origin`, `*`);
-  response.header(
-    `Access-Control-Allow-Methods`,
-    `GET, POST, PUT, DELETE, OPTIONS`
-  );
+  response.header(`Access-Control-Allow-Methods`, `GET, POST, PUT, DELETE, OPTIONS`);
+  response.header(`Access-Control-Allow-Headers`, `Origin, X-Request-Width, Content-Type, Accept`);
   app.use(cors());
   next();
 });
