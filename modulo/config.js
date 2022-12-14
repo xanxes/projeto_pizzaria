@@ -19,7 +19,8 @@ const MESSAGE_ERROR = {
 const MESSAGE_SUCCESS = {
     INSERT_ITEM : 'Item criado com sucesso no banco de dados',
     UPDATE_ITEM : 'Item atualizado com sucesso no banco de dados',
-    DELETE_ITEM : 'Item deletado com sucesso no banco de dados'
+    DELETE_ITEM : 'Item deletado com sucesso no banco de dados',
+    INSERT_MESSAGE : 'Mensagem enviada com sucesso!'
 }
 
 module.exports = {
