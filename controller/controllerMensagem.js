@@ -36,7 +36,7 @@ const insertMensagem = async ({
     celular,
   });
 
-  if (result) return { code: 201, message: MESSAGE_SUCCESS.INSERT_ITEM };
+  if (result) return { code: 201, message: MESSAGE_SUCCESS.INSERT_MESSAGE };
   else return { code: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB };
 };
 
