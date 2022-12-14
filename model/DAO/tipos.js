@@ -16,7 +16,7 @@ const listarPizzaComTipo = async (id) => {
 FROM tbl_tipo_pizza
     INNER JOIN tbl_pizza on tbl_pizza.id_tipo_pizza = tbl_tipo_pizza.id
     INNER JOIN tbl_categoria on tbl_categoria.id = tbl_pizza.id_categoria
-WHERE tbl_tipo_pizza.id = 1;`;
+WHERE tbl_tipo_pizza.id = ${id}`;
 
   if (response.length === 0) return false;
   return response;
