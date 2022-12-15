@@ -134,7 +134,7 @@ const login = async ({ email, senha }) => {
 
   const token = jwt.sign({ data: funcionario }, "tokenSecreto");
 
-  return { code: 200, message: token };
+  return { code: 200, message: token, funcionario };
 };
 
 module.exports = {
